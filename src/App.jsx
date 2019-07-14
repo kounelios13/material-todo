@@ -11,9 +11,15 @@ import {
 } from "@material-ui/core";
 
 class App extends React.Component {
+  // @INFO
+  // setState is asynchronous
   state = {
     todos: [],
     isLoading: true
+  };
+
+  updateLocalStorage = () => {
+    localStorage.setItem("todos", JSON.stringify(this.state.todos));
   };
 
   addTodo = title => {
@@ -22,41 +28,40 @@ class App extends React.Component {
       id: this.state.todos.length + 1,
       completed: false
     };
-    this.setState({
-      todos: [...this.state.todos, todo]
-    });
+    this.setState(
+      {
+        todos: [...this.state.todos, todo]
+      },
+      this.updateLocalStorage
+    );
   };
   toggleTodo = todo => {
     let { id } = todo;
-    console.log(this);
-    this.setState({
-      todos: this.state.todos.map(item => {
-        if (item.id === id) {
-          item.completed = !item.completed;
-        }
-        return item;
-      })
-    });
+    this.setState(
+      {
+        todos: this.state.todos.map(item => {
+          if (item.id === id) {
+            item.completed = !item.completed;
+          }
+          return item;
+        })
+      },
+      this.updateLocalStorage
+    );
   };
 
   deleteTodo = todo => {
     const { id } = todo;
-    this.setState({
-      todos: this.state.todos.filter(item => item.id !== id)
-    });
+    this.setState(
+      {
+        todos: this.state.todos.filter(item => item.id !== id)
+      },
+      this.updateLocalStorage
+    );
   };
 
-  async componentDidMount() {
-    console.log("calling didMount");
-    const promises = [];
-    for (let i = 0; i < 5; i++) {
-      promises.push(
-        fetch(`https://jsonplaceholder.typicode.com/todos/${i + 1}`).then(
-          response => response.json()
-        )
-      );
-    }
-    const data = await Promise.all(promises);
+  componentDidMount() {
+    const data = JSON.parse(localStorage.getItem("todos")) || [];
     const todos = data.map(todo => ({
       id: todo.id,
       title: todo.title,
