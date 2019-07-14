@@ -86,6 +86,7 @@ class App extends React.Component {
             </React.Fragment>
           ) : (
             <div>
+              <Typography>Total todos : {this.state.todos.length}</Typography>
               <TodoGrid
                 todos={this.state.todos}
                 deleteTodo={this.deleteTodo}
