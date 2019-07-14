@@ -9,6 +9,7 @@ import IconButton from "@material-ui/core/IconButton";
 import ListItemText from "@material-ui/core/ListItemText";
 // import CommentIcon from "@material-ui/icons/Comment";
 import DeleteIcon from "@material-ui/icons/Delete";
+
 import { makeStyles } from "@material-ui/core/styles";
 import React from "react";
 const useStyles = makeStyles(theme => ({
@@ -53,10 +54,11 @@ function TodoGrid(props) {
               />
             </ListItemIcon>
             <ListItemText id={`label-id-${todo.id}`} primary={todo.title} />
+
             <ListItemSecondaryAction>
               <IconButton
                 edge="end"
-                aria-label="Comments"
+                aria-label="Delete todo"
                 onClick={() => props.deleteTodo(todo)}
               >
                 <DeleteIcon />
